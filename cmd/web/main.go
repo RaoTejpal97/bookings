@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/gob"
 	"fmt"
 	"log"
 	"net/http"
@@ -8,6 +9,7 @@ import (
 
 	"github.com/tejpal/booking/pkg/config"
 	"github.com/tejpal/booking/pkg/handlers"
+	"github.com/tejpal/booking/pkg/models"
 	"github.com/tejpal/booking/pkg/render"
 
 	"github.com/alexedwards/scs/v2"
@@ -16,11 +18,12 @@ import (
 const portNumber = ":8080"
 
 var app config.AppConfig
-var session *scs.SessionManager
+var session *scs.SessionManager // HTTP Session Management for Go Web Applications
 
 // main is the main function
 func main() {
 
+	gob.Register(models.Reservation{})
 	// change this is to true when in production
 	app.InProducion = false
 
@@ -58,6 +61,9 @@ func main() {
 	}
 
 	err = srv.ListenAndServe()
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	log.Fatal(err)
 
