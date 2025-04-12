@@ -7,9 +7,9 @@ import (
 	"net/http"
 
 	"github.com/tejpal/booking/pkg/config"
+	"github.com/tejpal/booking/pkg/forms"
 	"github.com/tejpal/booking/pkg/models"
 	"github.com/tejpal/booking/pkg/render"
-	"github.com/tsawler/bookings-app/internal/forms"
 )
 
 // Repo the repository used by the handlers
@@ -149,10 +149,12 @@ func (m *Repository) AvailablityJSON(w http.ResponseWriter, r *http.Request) {
 	w.Write(out)
 }
 
+// Contact renders the contact page
 func (m *Repository) contact(w http.ResponseWriter, r *http.Request) {
 	render.RenderTemplate(w, r, "contact.page.html", &models.TemplateData{})
 }
 
+// ReservationSummary display the reservation summary page
 func (m *Repository) ReservationSummary(w http.ResponseWriter, r *http.Request) {
 	reservation, ok := m.App.Session.Get(r.Context(), "reservation").(models.Reservation)
 	if !ok {
